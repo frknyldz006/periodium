@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   list: {
     alignItems: 'center',
   },
-  flatList: {},
+  flatList: {}, 
   flatList2: {
     position: 'absolute',
     top: 260,
