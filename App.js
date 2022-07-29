@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
 /* eslint-disable react-native/no-inline-styles */
 import {
   Text,
@@ -12,32 +14,30 @@ import {
 import React, {useState} from 'react';
 
 const customData = require('./assets/periodictable.json');
-var prevTappedSymbol = '';
-var prevTappedItem = '';
 const Periodium = () => {
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         style={item.key == 'empty' ? styles.empty : styles.test}
         onPress={() => {
-          console.log(item.symbol);
-          console.log('prev' + prevTappedSymbol);
-          if (prevTappedSymbol == '') {
-            prevTappedSymbol = item.symbol;
-            prevTappedItem = item;
+          if (element.symbol == '') {
+            setElement(item);
             setZoom(!zoom);
           }
-          if (prevTappedSymbol == item.symbol) {
-            prevTappedSymbol = item.symbol;
-            prevTappedItem = item;
-            console.log('prev2' + prevTappedItem);
+          if (element.symbol == item.symbol) {
+            console.log('== ' + element.symbol);
+
+            setElement(item);
             setZoom(!zoom);
           }
-          if (prevTappedSymbol != item.symbol) {
-            prevTappedSymbol = item.symbol;
-            prevTappedItem = item;
-            console.log('prev2' + {prevTappedItem});
-            setZoom(zoom);
+          if (element.symbol != item.symbol) {
+            if (zoom == true) {
+              setElement(item);
+            }
+            if (zoom == false) {
+              setElement(item);
+              setZoom(!zoom);
+            }
           }
         }}>
         <View style={item.key == 'empty' ? {opacity: 0} : styles.container}>
@@ -57,14 +57,22 @@ const Periodium = () => {
   };
 
   const [zoom, setZoom] = React.useState(false);
+  const [element, setElement] = React.useState({symbol: ''});
 
-  console.log(zoom);
   return (
     <SafeAreaView>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', backgroundColor: '#ffafcc'}}>
         <ScrollView>
-          <View style={styles.list}>
-            <Text style={styles.text}>Periodium</Text>
+          <View
+            style={
+              zoom == false
+                ? {position: 'absolute', left: 250, top: 50}
+                : {position: 'absolute', left: 165, top: 30}
+            }>
+            <Image
+              source={require('./assets/images/table.png')}
+              style={{height: 80, width: 150}}
+            />
           </View>
           <View style={zoom == false ? styles.list : styles.list2}>
             <FlatList
@@ -84,20 +92,25 @@ const Periodium = () => {
               style={styles.flatList}
             />
           </View>
+          <View>
+            <Text style={styles.text2}>2022 © Furkan Yıldız</Text>
+          </View>
         </ScrollView>
         <View
           style={
             zoom == true
               ? {
                   width: 200,
-                  backgroundColor: '#353535',
+                  backgroundColor: '#DD97B1',
                   alignItems: 'center',
                 }
               : {width: 0}
           }>
-          <Text style={styles.text}>{prevTappedItem.name}</Text>
-          <Text style={styles.text2}>{prevTappedItem.atomic_mass}</Text>
-          <Text style={styles.text2}>{prevTappedItem.summary}</Text>
+          <ScrollView style={{}}>
+            <Text style={styles.text}>{element.name}</Text>
+            <Text style={styles.text2}>{element.atomic_mass}</Text>
+            <Text style={styles.text2}>{element.summary}</Text>
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>
@@ -107,12 +120,20 @@ const Periodium = () => {
 const styles = StyleSheet.create({
   list: {
     alignItems: 'center',
+    paddingTop: 10,
   },
   list2: {
     alignItems: 'flex-start',
+    paddingTop: 15,
+    paddingLeft: 5,
   },
   shortList: {paddingTop: 10, paddingLeft: 40, alignItems: 'center'},
-  shortList2: {paddingTop: 5, paddingLeft: 70, alignItems: 'flex-start'},
+  shortList2: {
+    paddingTop: 5,
+    paddingLeft: 75,
+    alignItems: 'flex-start',
+    paddingBottom: 25,
+  },
   flatList: {},
   flatList2: {
     position: 'absolute',
@@ -131,7 +152,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignText: 'center',
-    paddingTop: 10,
+    padding: 10,
     fontSize: 20,
     color: 'white',
   },
@@ -148,7 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 4,
     justifyContent: 'center',
-    backgroundColor: 'mediumspringgreen',
+    backgroundColor: '#ffc8dd',
+    elevation: 1,
   },
   item2: {
     height: 28,
@@ -156,8 +178,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 2,
     justifyContent: 'center',
-    backgroundColor: 'mediumspringgreen',
+    backgroundColor: '#ffc8dd',
+    elevation: 1,
   },
-  test: {},
 });
 export default Periodium;
