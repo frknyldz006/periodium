@@ -1,6 +1,7 @@
 # **Periodium**
 
 > *Built with React-Native-Cli*
+
 > **2022 ※ Furkan Yıldız**
 
 *An app that visualizes the periodic table in an advanced way*
